@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" fill="#222">
+  <rect width="200" height="200" rx="12" fill="#333" />
+  <circle cx="100" cy="100" r="40" fill="#555" />
+  <text x="100" y="105" text-anchor="middle" fill="#fff" font-size="14" font-family="sans-serif">YZY</text>
+</svg>
+
