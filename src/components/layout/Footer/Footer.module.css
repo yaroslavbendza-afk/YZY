@@ -1,0 +1,228 @@
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--player-height);
+  background-color: var(--bg-player);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  z-index: 50;
+}
+
+.leftGroup {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 280px;
+}
+
+.coverPlaceholder {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background-color: #141414;
+  border: 1px solid #222222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.coverImg {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.trackMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.trackTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.trackArtist {
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.likeBtn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.likeBtn:hover {
+  color: var(--text-primary);
+}
+
+.likeBtnActive {
+  color: #ef4444;
+}
+
+.centerGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  max-width: 580px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.iconBtn {
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.iconBtn:hover {
+  color: var(--text-primary);
+}
+
+.activeIcon {
+  color: var(--accent-white);
+}
+
+.playBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background-color: var(--accent-white);
+  color: var(--accent-black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.playBtn:hover {
+  transform: scale(1.05);
+}
+
+.timeline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.time {
+  font-size: 11px;
+  color: var(--text-muted);
+  min-width: 26px;
+}
+
+.timeBarWrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.timeRange {
+  width: 100%;
+  height: 3px;
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #262626;
+  border-radius: var(--radius-full);
+  outline: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.timeRange::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--accent-white);
+  cursor: pointer;
+}
+
+.timeRange:hover {
+  background-color: #383838;
+}
+
+.rightGroup {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  width: 260px;
+  justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 0 16px;
+    height: 72px;
+  }
+
+  .timeline {
+    display: none;
+  }
+
+  .leftGroup {
+    width: auto;
+    max-width: 50%;
+  }
+
+  .rightGroup {
+    width: auto;
+    gap: 12px;
+  }
+
+  .controls {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .rightGroup {
+    display: none;
+  }
+
+  .leftGroup {
+    max-width: 65%;
+  }
+}

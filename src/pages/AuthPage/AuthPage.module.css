@@ -1,0 +1,9 @@
+.page {
+  min-height: calc(100vh - var(--header-height) - var(--player-height));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px 120px;
+  background-color: #000000;
+  width: 100%;
+}

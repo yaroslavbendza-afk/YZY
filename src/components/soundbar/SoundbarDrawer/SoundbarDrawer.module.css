@@ -1,0 +1,240 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.drawer {
+  width: 380px;
+  max-width: 100%;
+  height: 100%;
+  background-color: #121212;
+  border-left: 1px solid #222222;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  gap: 24px;
+  overflow-y: auto;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.7);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.headerIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background-color: #1a1a1a;
+  border: 1px solid #282828;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+}
+
+.brandLabel {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  display: block;
+}
+
+.title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.closeButton {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.closeButton:hover {
+  color: var(--text-primary);
+  background-color: #1f1f1f;
+}
+
+.previewSection {
+  background-color: #161616;
+  border: 1px solid #262626;
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.previewLabel {
+  font-size: 11px;
+  font-weight: 700;
+  color: #71717a;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.previewStatus {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #71717a;
+  transition: background-color 0.2s ease;
+}
+
+.statusDotActive {
+  background-color: #22c55e;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+}
+
+.waveform {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 44px;
+  padding: 4px 0;
+}
+
+.waveformAnimated .waveBar {
+  animation: wavePulse 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes wavePulse {
+  0% {
+    transform: scaleY(0.7);
+  }
+  100% {
+    transform: scaleY(1.3);
+  }
+}
+
+.waveBar {
+  flex: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  border-radius: var(--radius-full);
+  min-height: 4px;
+  transform-origin: bottom;
+}
+
+.slidersSection {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.sliderRow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sliderHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.sliderTitleGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.sliderValue {
+  color: #71717a;
+  font-size: 13px;
+}
+
+.rangeInput {
+  width: 100%;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #242424;
+  border-radius: var(--radius-full);
+  outline: none;
+  cursor: pointer;
+}
+
+.rangeInput::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: var(--accent-white);
+  cursor: pointer;
+}
+
+.footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.resetBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: var(--radius-full);
+  background-color: transparent;
+  border: 1px solid #2e2e2e;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  width: fit-content;
+}
+
+.resetBtn:hover {
+  background-color: #1a1a1a;
+  border-color: #404040;
+}
+
+.footerNote {
+  font-size: 11px;
+  color: #52525b;
+  line-height: 1.4;
+}

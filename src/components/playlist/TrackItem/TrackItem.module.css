@@ -1,0 +1,182 @@
+/* Grid layout */
+.gridCard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    opacity 0.2s ease;
+  min-width: 0;
+  border-radius: var(--radius-md);
+  padding: 6px;
+}
+
+.gridCard:hover {
+  transform: translateY(-2px);
+}
+
+.gridCardActive {
+  background-color: #141414;
+}
+
+.gridCoverWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background-color: #141414;
+}
+
+.gridCoverImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.playOverlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.gridCard:hover .playOverlay,
+.gridCardActive .playOverlay {
+  opacity: 1;
+}
+
+.playOverlayBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--accent-white);
+  color: var(--accent-black);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+  transform: scale(0.9);
+  transition: transform 0.15s ease;
+}
+
+.gridCard:hover .playOverlayBtn {
+  transform: scale(1);
+}
+
+.gridTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 4px;
+}
+
+.gridArtist {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* List layout */
+.listRow {
+  display: grid;
+  grid-template-columns: 32px 42px 1fr 140px 60px;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.15s ease;
+  cursor: pointer;
+}
+
+.listRow:hover {
+  background-color: #141414;
+}
+
+.listRowActive {
+  background-color: #181818;
+}
+
+.trackIndex {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-dimmed);
+  display: flex;
+  align-items: center;
+}
+
+.playingIndicator {
+  color: var(--accent-white);
+}
+
+.listCoverWrapper {
+  width: 42px;
+  height: 42px;
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: #141414;
+}
+
+.listCoverImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.listMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.listTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.textActive {
+  color: #fff;
+  font-weight: 700;
+}
+
+.listArtist {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.listGenre {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+.listDuration {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: right;
+}

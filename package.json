@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test:e2e": "cross-env ELECTRON_RUN_AS_NODE= cypress run",
+    "test:e2e": "node scripts/test-e2e.js",
     "prepare": "husky"
   },
   "lint-staged": {
