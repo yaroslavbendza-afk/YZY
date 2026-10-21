@@ -1,14 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  Route,
+  Routes,
+  useMatch,
+  useNavigate,
+  useSearchParams,
+} from "react-router";
 import Header from "../components/layout/Header/Header";
 import Sidebar from "../components/layout/Sidebar/Sidebar";
 import Footer from "../components/layout/Footer/Footer";
 import SoundbarDrawer from "../components/soundbar/SoundbarDrawer/SoundbarDrawer";
-import AuthModal from "../components/auth/AuthModal/AuthModal";
 import HomePage from "../pages/HomePage/HomePage";
 import SearchPage from "../pages/SearchPage/SearchPage";
 import PlaylistPage from "../pages/PlaylistPage/PlaylistPage";
 import LibraryPage from "../pages/LibraryPage/LibraryPage";
 import AuthPage from "../pages/AuthPage/AuthPage";
+import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
+import { mockPlaylists } from "../data/mockPlaylists";
 import styles from "./App.module.css";
 
 const allTracksList = [
@@ -123,27 +131,67 @@ const allTracksList = [
 ];
 
 export default function App() {
-  const [activePage, setActivePage] = useState("home");
-  const [selectedPlaylist, setSelectedPlaylist] = useState(null);
+  const navigate = useNavigate();
+  const isSearchPage = Boolean(useMatch("/search"));
+  const [searchParams] = useSearchParams();
+  const searchQuery = isSearchPage ? searchParams.get("q") || "" : "";
+  const [playlists, setPlaylists] = useState(() => {
+    try {
+      const saved = JSON.parse(
+        localStorage.getItem("yzy.customPlaylists") || "[]",
+      );
+      const custom = Array.isArray(saved)
+        ? saved.filter(
+            (playlist) =>
+              typeof playlist?.id === "string" &&
+              playlist.id.startsWith("custom-") &&
+              typeof playlist.title === "string" &&
+              playlist.songCount === 0,
+          )
+        : [];
+      return [...mockPlaylists, ...custom];
+    } catch {
+      return mockPlaylists;
+    }
+  });
   const [currentTrack, setCurrentTrack] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
   const [isSoundbarOpen, setIsSoundbarOpen] = useState(false);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [authMode, setAuthMode] = useState("login");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
 
-  const handleNavigate = (page, playlistData = null) => {
-    setActivePage(page);
-    if (playlistData) {
-      setSelectedPlaylist(playlistData);
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        "yzy.customPlaylists",
+        JSON.stringify(
+          playlists.filter((playlist) => playlist.id.startsWith("custom-")),
+        ),
+      );
+    } catch {
+      return;
     }
+  }, [playlists]);
+
+  const handleCreatePlaylist = () => {
+    const playlist = {
+      id: `custom-${crypto.randomUUID()}`,
+      title: `My Playlist #${playlists.filter((item) => item.id.startsWith("custom-")).length + 3}`,
+      songCount: 0,
+      imageSrc: "/assets/images/guilt-trip.jpg",
+    };
+    setPlaylists((previous) => [...previous, playlist]);
+    navigate(`/playlist/${playlist.id}`);
   };
 
-  const handleOpenAuth = (mode = "login") => {
-    setAuthMode(mode);
-    setIsAuthModalOpen(true);
+  const handleSearchChange = (query) => {
+    const params = new URLSearchParams(isSearchPage ? searchParams : undefined);
+    if (query) params.set("q", query);
+    else params.delete("q");
+    navigate(
+      { pathname: "/search", search: params.toString() },
+      { replace: isSearchPage },
+    );
   };
 
   const handleLogin = (profile) => {
@@ -204,88 +252,69 @@ export default function App() {
     setIsPlaying(true);
   };
 
-  const renderPage = () => {
-    switch (activePage) {
-      case "home":
-        return (
-          <HomePage
-            currentTrack={currentTrack}
-            isPlaying={isPlaying}
-            onPlayTrack={handlePlayTrack}
-            searchQuery={searchQuery}
-            onNavigate={handleNavigate}
-          />
-        );
-      case "search":
-        return (
-          <SearchPage
-            currentTrack={currentTrack}
-            isPlaying={isPlaying}
-            onPlayTrack={handlePlayTrack}
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-            onNavigate={handleNavigate}
-          />
-        );
-      case "playlist":
-        return (
-          <PlaylistPage
-            currentTrack={currentTrack}
-            isPlaying={isPlaying}
-            onPlayTrack={handlePlayTrack}
-            playlist={selectedPlaylist}
-            onNavigate={handleNavigate}
-          />
-        );
-      case "library":
-        return (
-          <LibraryPage
-            currentTrack={currentTrack}
-            isPlaying={isPlaying}
-            onPlayTrack={handlePlayTrack}
-            onNavigate={handleNavigate}
-          />
-        );
-      case "auth":
-        return (
-          <AuthPage
-            onLogin={(profile) => {
-              handleLogin(profile);
-              setActivePage("home");
-            }}
-            onNavigate={handleNavigate}
-          />
-        );
-      default:
-        return (
-          <HomePage
-            currentTrack={currentTrack}
-            isPlaying={isPlaying}
-            onPlayTrack={handlePlayTrack}
-            searchQuery={searchQuery}
-            onNavigate={handleNavigate}
-          />
-        );
-    }
+  const playbackProps = {
+    currentTrack,
+    isPlaying,
+    onPlayTrack: handlePlayTrack,
   };
 
   return (
     <div className={styles.appContainer}>
       <Header
-        activePage={activePage}
-        onNavigate={handleNavigate}
-        onOpenAuth={handleOpenAuth}
         searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
+        onSearchChange={handleSearchChange}
         isLoggedIn={isLoggedIn}
         userProfile={userProfile}
         onLogout={handleLogout}
       />
 
       <div className={styles.mainLayout}>
-        <Sidebar activePage={activePage} onNavigate={handleNavigate} />
+        <Sidebar
+          playlists={playlists.filter(
+            (playlist) =>
+              ["p1", "p2"].includes(playlist.id) ||
+              playlist.id.startsWith("custom-"),
+          )}
+          onCreatePlaylist={handleCreatePlaylist}
+        />
 
-        <div className={styles.contentArea}>{renderPage()}</div>
+        <div className={styles.contentArea}>
+          <Routes>
+            <Route path="/" element={<HomePage {...playbackProps} />} />
+            <Route
+              path="/search"
+              element={
+                <SearchPage
+                  {...playbackProps}
+                  searchQuery={searchQuery}
+                  onSearchChange={handleSearchChange}
+                />
+              }
+            />
+            <Route
+              path="/library"
+              element={<LibraryPage {...playbackProps} playlists={playlists} />}
+            />
+            <Route
+              path="/playlist/:playlistId"
+              element={
+                <PlaylistPage {...playbackProps} playlists={playlists} />
+              }
+            />
+            <Route
+              path="/auth"
+              element={
+                <AuthPage
+                  onLogin={(profile) => {
+                    handleLogin(profile);
+                    navigate("/", { replace: true });
+                  }}
+                />
+              }
+            />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </div>
       </div>
 
       <Footer
@@ -303,13 +332,6 @@ export default function App() {
         onClose={() => setIsSoundbarOpen(false)}
         currentTrack={currentTrack}
         isPlaying={isPlaying}
-      />
-
-      <AuthModal
-        isOpen={isAuthModalOpen}
-        initialMode={authMode}
-        onClose={() => setIsAuthModalOpen(false)}
-        onLogin={handleLogin}
       />
     </div>
   );

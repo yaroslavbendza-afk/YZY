@@ -1,39 +1,21 @@
-import { useState } from "react";
+import { Link, NavLink } from "react-router";
 import PlaylistList from "../../playlist/PlaylistList/PlaylistList";
 import styles from "./Sidebar.module.css";
 
-const initialPlaylists = [
-  { id: "p1", title: "Roadtrip Mix", songCount: 6 },
-  { id: "p2", title: "Redesign Demo", songCount: 2 },
-];
-
-export default function Sidebar({ activePage = "home", onNavigate }) {
-  const [playlists, setPlaylists] = useState(initialPlaylists);
-
-  const handleAddPlaylist = () => {
-    const newId = `p${playlists.length + 1}`;
-    const newPl = {
-      id: newId,
-      title: `My Playlist #${playlists.length + 1}`,
-      songCount: 0,
-    };
-    setPlaylists((prev) => [...prev, newPl]);
-  };
-
+export default function Sidebar({ playlists, onCreatePlaylist }) {
   return (
     <aside className={styles.sidebar} aria-label="Library Navigation">
       <div className={styles.libraryHeader}>
-        <button
-          type="button"
-          onClick={() => onNavigate && onNavigate("library")}
+        <Link
+          to="/library"
           className={styles.libraryTitle}
           title="Open Library"
         >
           YOUR LIBRARY
-        </button>
+        </Link>
         <button
           type="button"
-          onClick={handleAddPlaylist}
+          onClick={onCreatePlaylist}
           className={styles.addButton}
           aria-label="Create playlist"
           title="Create new playlist"
@@ -53,10 +35,12 @@ export default function Sidebar({ activePage = "home", onNavigate }) {
       </div>
 
       <nav className={styles.navGroup} aria-label="Main sidebar links">
-        <button
-          type="button"
-          onClick={() => onNavigate && onNavigate("home")}
-          className={`${styles.navItem} ${activePage === "home" ? styles.navItemActive : ""}`}
+        <NavLink
+          to="/"
+          end
+          className={({ isActive }) =>
+            `${styles.navItem} ${isActive ? styles.navItemActive : ""}`
+          }
         >
           <svg
             width="18"
@@ -70,12 +54,13 @@ export default function Sidebar({ activePage = "home", onNavigate }) {
             <polyline points="9 22 9 12 15 12 15 22" />
           </svg>
           Home
-        </button>
+        </NavLink>
 
-        <button
-          type="button"
-          onClick={() => onNavigate && onNavigate("search")}
-          className={`${styles.navItem} ${activePage === "search" ? styles.navItemActive : ""}`}
+        <NavLink
+          to="/search"
+          className={({ isActive }) =>
+            `${styles.navItem} ${isActive ? styles.navItemActive : ""}`
+          }
         >
           <svg
             width="18"
@@ -89,12 +74,13 @@ export default function Sidebar({ activePage = "home", onNavigate }) {
             <path d="m21 21-4.3-4.3" />
           </svg>
           Search
-        </button>
+        </NavLink>
 
-        <button
-          type="button"
-          onClick={() => onNavigate && onNavigate("library")}
-          className={`${styles.navItem} ${activePage === "library" ? styles.navItemActive : ""}`}
+        <NavLink
+          to="/library"
+          className={({ isActive }) =>
+            `${styles.navItem} ${isActive ? styles.navItemActive : ""}`
+          }
         >
           <svg
             width="18"
@@ -110,11 +96,11 @@ export default function Sidebar({ activePage = "home", onNavigate }) {
             <path d="M4 4v16" />
           </svg>
           Library
-        </button>
+        </NavLink>
       </nav>
 
       <div className={styles.playlistContainer}>
-        <PlaylistList playlists={playlists} onNavigate={onNavigate} />
+        <PlaylistList playlists={playlists} />
       </div>
 
       <p className={styles.tipText}>

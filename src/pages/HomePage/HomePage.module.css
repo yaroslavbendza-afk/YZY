@@ -6,7 +6,6 @@
   width: 100%;
 }
 
-/* Featured Hero Banner */
 .featuredCard {
   background-color: #070709;
   border: 1px solid #1a1a20;
@@ -127,7 +126,6 @@
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
 }
 
-/* Category filter chips & view toggle */
 .controlsRow {
   display: flex;
   align-items: center;
@@ -203,7 +201,6 @@
   color: #000000;
 }
 
-/* Sections */
 .section {
   display: flex;
   flex-direction: column;
@@ -232,7 +229,6 @@
   border-radius: var(--radius-full);
 }
 
-/* 6-column grid matching Figma */
 .tracksGrid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);

@@ -1,32 +1,28 @@
+import { Link, NavLink, useMatch } from "react-router";
 import styles from "./Header.module.css";
 
 export default function Header({
-  activePage = "home",
-  onNavigate,
-  onOpenAuth,
   searchQuery = "",
   onSearchChange,
   isLoggedIn = false,
   userProfile = null,
   onLogout,
 }) {
+  const isSearchPage = Boolean(useMatch("/search"));
   return (
     <header className={styles.header}>
       <nav className={styles.nav} aria-label="Main Navigation">
         <div className={styles.brandGroup}>
-          <button
-            type="button"
-            className={styles.logo}
-            onClick={() => onNavigate && onNavigate("home")}
-            aria-label="YZY Home"
-          >
+          <Link to="/" className={styles.logo} aria-label="YZY Home">
             <span>YZY</span>
             <span className={styles.logoDot}>•</span>
-          </button>
-          <button
-            type="button"
-            className={`${styles.homeIconBtn} ${activePage === "home" ? styles.homeIconActive : ""}`}
-            onClick={() => onNavigate && onNavigate("home")}
+          </Link>
+          <NavLink
+            to="/"
+            end
+            className={({ isActive }) =>
+              `${styles.homeIconBtn} ${isActive ? styles.homeIconActive : ""}`
+            }
             aria-label="Home"
           >
             <svg
@@ -40,13 +36,16 @@ export default function Header({
               <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
               <polyline points="9 22 9 12 15 12 15 22" />
             </svg>
-          </button>
+          </NavLink>
         </div>
 
         <form
           className={styles.searchForm}
           role="search"
-          onSubmit={(e) => e.preventDefault()}
+          onSubmit={(e) => {
+            e.preventDefault();
+            onSearchChange(searchQuery);
+          }}
         >
           <span className={styles.searchIcon}>
             <svg
@@ -64,20 +63,9 @@ export default function Header({
           <input
             type="search"
             value={searchQuery}
-            onChange={(e) => {
-              if (onSearchChange) onSearchChange(e.target.value);
-              if (
-                onNavigate &&
-                activePage !== "search" &&
-                e.target.value.trim().length > 0
-              ) {
-                onNavigate("search");
-              }
-            }}
+            onChange={(e) => onSearchChange(e.target.value)}
             onFocus={() => {
-              if (onNavigate && activePage !== "search") {
-                onNavigate("search");
-              }
+              if (!isSearchPage) onSearchChange(searchQuery);
             }}
             placeholder="What do you want to listen to?"
             className={styles.searchInput}
@@ -122,20 +110,12 @@ export default function Header({
               </div>
             ) : (
               <>
-                <button
-                  type="button"
-                  className={styles.signUpBtn}
-                  onClick={() => onOpenAuth && onOpenAuth("signup")}
-                >
+                <Link to="/auth?mode=signup" className={styles.signUpBtn}>
                   Sign Up
-                </button>
-                <button
-                  type="button"
-                  className={styles.logInBtn}
-                  onClick={() => onOpenAuth && onOpenAuth("login")}
-                >
+                </Link>
+                <Link to="/auth" className={styles.logInBtn}>
                   Log In
-                </button>
+                </Link>
               </>
             )}
           </div>

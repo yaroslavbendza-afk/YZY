@@ -4,11 +4,15 @@ import styles from "./AuthModal.module.css";
 export default function AuthModal({
   isOpen = false,
   initialMode = "login",
+  mode: controlledMode,
+  onModeChange,
   onClose,
   isPage = false,
   onLogin,
 }) {
-  const [mode, setMode] = useState(initialMode);
+  const [localMode, setLocalMode] = useState(initialMode);
+  const mode = controlledMode ?? localMode;
+  const setMode = onModeChange ?? setLocalMode;
   const [name, setName] = useState("Alex Carter");
   const [email, setEmail] = useState("you@example.com");
   const [password, setPassword] = useState("");
@@ -63,7 +67,6 @@ export default function AuthModal({
         </button>
       )}
 
-      {/* Header section outside the card, left-aligned */}
       <header className={styles.header}>
         <div className={styles.brandRow}>
           <div className={styles.logoSquareBadge}>
@@ -84,7 +87,6 @@ export default function AuthModal({
         </p>
       </header>
 
-      {/* Rounded card containing the form */}
       <div className={styles.card}>
         <nav className={styles.tabNav} aria-label="Mode switcher">
           <button
