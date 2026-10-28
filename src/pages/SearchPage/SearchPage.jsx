@@ -1,4 +1,3 @@
-import { useState } from "react";
 import TrackItem from "../../components/playlist/TrackItem/TrackItem";
 import styles from "./SearchPage.module.css";
 
@@ -153,12 +152,9 @@ export default function SearchPage({
   searchQuery = "",
   onSearchChange,
 }) {
-  const [localQuery, setLocalQuery] = useState(searchQuery);
-
-  const activeQuery = searchQuery || localQuery;
+  const activeQuery = searchQuery;
 
   const handleQueryChange = (val) => {
-    setLocalQuery(val);
     if (onSearchChange) onSearchChange(val);
   };
 

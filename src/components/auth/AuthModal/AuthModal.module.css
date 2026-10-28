@@ -43,7 +43,6 @@
   background-color: #24242c;
 }
 
-/* Left-aligned Header outside the card */
 .header {
   display: flex;
   flex-direction: column;
@@ -93,7 +92,6 @@
   margin: 0;
 }
 
-/* Rounded dark card containing the form */
 .card {
   background-color: #0e0e11;
   border: 1px solid #1a1a20;

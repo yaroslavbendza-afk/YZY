@@ -1,15 +1,17 @@
+import { NavLink } from "react-router";
 import styles from "./PlaylistCard.module.css";
 
 export default function PlaylistCard({
+  id,
   title = "Roadtrip Mix",
   songCount = 1,
-  onNavigate,
 }) {
   return (
-    <button
-      type="button"
-      onClick={() => onNavigate && onNavigate("playlist", { title, songCount })}
-      className={styles.card}
+    <NavLink
+      to={`/playlist/${id}`}
+      className={({ isActive }) =>
+        `${styles.card} ${isActive ? styles.active : ""}`
+      }
     >
       <div className={styles.cover}>
         <svg
@@ -31,6 +33,6 @@ export default function PlaylistCard({
           Playlist · {songCount} {songCount === 1 ? "song" : "songs"}
         </span>
       </div>
-    </button>
+    </NavLink>
   );
 }

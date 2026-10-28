@@ -152,7 +152,6 @@ export default function HomePage({
 
   return (
     <main className={styles.page}>
-      {/* Featured Banner matching Frame 1 */}
       <section className={styles.featuredCard} aria-label="Featured Song">
         <div className={styles.featuredContent}>
           <span className={styles.featuredBadge}>
@@ -233,7 +232,6 @@ export default function HomePage({
         </div>
       </section>
 
-      {/* Categories chips and grid/list view toggle */}
       <section
         className={styles.controlsRow}
         aria-label="Filters and View Controls"
@@ -297,7 +295,6 @@ export default function HomePage({
         </div>
       </section>
 
-      {/* Popular songs */}
       <section className={styles.section} aria-labelledby="popular-heading">
         <header className={styles.sectionHeader}>
           <h2 id="popular-heading" className={styles.sectionTitle}>
@@ -336,7 +333,6 @@ export default function HomePage({
         )}
       </section>
 
-      {/* Recommended songs */}
       <section className={styles.section} aria-labelledby="recommended-heading">
         <header className={styles.sectionHeader}>
           <h2 id="recommended-heading" className={styles.sectionTitle}>

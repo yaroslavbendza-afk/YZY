@@ -1,46 +1,9 @@
 import { useState } from "react";
+import { Link } from "react-router";
+import { mockPlaylists } from "../../data/mockPlaylists";
 import styles from "./LibraryPage.module.css";
 
 const tabs = ["Playlists", "Liked Songs", "Albums", "Artists"];
-
-const libraryPlaylists = [
-  {
-    id: "1",
-    title: "Roadtrip Mix",
-    count: 6,
-    imageSrc: "/assets/images/guilt-trip.jpg",
-  },
-  {
-    id: "2",
-    title: "Redesign Demo",
-    count: 2,
-    imageSrc: "/assets/images/rockstar-made.jpg",
-  },
-  {
-    id: "3",
-    title: "Late Night Hip-Hop",
-    count: 18,
-    imageSrc: "/assets/images/rather-lie.jpg",
-  },
-  {
-    id: "4",
-    title: "Workout Energy",
-    count: 24,
-    imageSrc: "/assets/images/fein.jpg",
-  },
-  {
-    id: "5",
-    title: "Chill Focus",
-    count: 32,
-    imageSrc: "/assets/images/relevant.jpg",
-  },
-  {
-    id: "6",
-    title: "Summer Vibe",
-    count: 15,
-    imageSrc: "/assets/images/flashing-lights.jpg",
-  },
-];
 
 const likedSampleTrack = {
   id: "1",
@@ -56,7 +19,7 @@ export default function LibraryPage({
   currentTrack = null,
   isPlaying = false,
   onPlayTrack,
-  onNavigate,
+  playlists = mockPlaylists,
 }) {
   const [activeTab, setActiveTab] = useState("Playlists");
 
@@ -85,7 +48,6 @@ export default function LibraryPage({
         </div>
       </header>
 
-      {/* Liked Songs banner */}
       <section className={styles.likedBanner} aria-label="Liked Songs">
         <div className={styles.likedMeta}>
           <h2 className={styles.likedTitle}>Liked Songs</h2>
@@ -110,16 +72,14 @@ export default function LibraryPage({
         </button>
       </section>
 
-      {/* Playlists grid */}
       <section className={styles.section} aria-label="All Playlists">
         <h2 className={styles.sectionTitle}>All Playlists</h2>
 
         <div className={styles.playlistsGrid}>
-          {libraryPlaylists.map((pl) => (
-            <button
+          {playlists.map((pl) => (
+            <Link
               key={pl.id}
-              type="button"
-              onClick={() => onNavigate && onNavigate("playlist", pl)}
+              to={`/playlist/${pl.id}`}
               className={styles.playlistItem}
             >
               <div className={styles.playlistCover}>
@@ -137,10 +97,10 @@ export default function LibraryPage({
               <div className={styles.playlistInfo}>
                 <h3 className={styles.playlistName}>{pl.title}</h3>
                 <span className={styles.playlistSongs}>
-                  Playlist · {pl.count} songs
+                  Playlist · {pl.songCount} songs
                 </span>
               </div>
-            </button>
+            </Link>
           ))}
         </div>
       </section>

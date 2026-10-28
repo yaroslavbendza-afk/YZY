@@ -1,3 +1,6 @@
+import { useParams } from "react-router";
+import { mockPlaylists } from "../../data/mockPlaylists";
+import NotFoundPage from "../NotFoundPage/NotFoundPage";
 import TrackItem from "../../components/playlist/TrackItem/TrackItem";
 import styles from "./PlaylistPage.module.css";
 
@@ -62,17 +65,22 @@ export default function PlaylistPage({
   currentTrack = null,
   isPlaying = false,
   onPlayTrack,
-  playlist = null,
+  playlists = mockPlaylists,
 }) {
-  const displayTitle = playlist?.title || "Roadtrip Mix";
-  const displayCount = playlist?.songCount || playlist?.count || 6;
+  const { playlistId } = useParams();
+  const playlist = playlists.find((item) => item.id === playlistId);
+  if (!playlist) return <NotFoundPage isPlaylist />;
+
+  const displayTitle = playlist.title;
+  const displayCount = playlist.songCount;
   const displayCover = playlist?.imageSrc || "/assets/images/guilt-trip.jpg";
+  const tracks = playlistTracks.slice(0, displayCount);
 
   const isPlayingThisPlaylist =
-    isPlaying && playlistTracks.some((t) => t.id === currentTrack?.id);
+    isPlaying && tracks.some((t) => t.id === currentTrack?.id);
 
   const handlePlayAll = () => {
-    onPlayTrack && onPlayTrack(playlistTracks[0]);
+    if (tracks.length && onPlayTrack) onPlayTrack(tracks[0]);
   };
 
   return (
@@ -98,7 +106,7 @@ export default function PlaylistPage({
             <span>•</span>
             <span>{displayCount} songs</span>
             <span>•</span>
-            <span>19 min 26 sec</span>
+            <span>{tracks.length ? "19 min 26 sec" : "0 min"}</span>
           </div>
         </div>
       </header>
@@ -108,6 +116,7 @@ export default function PlaylistPage({
           type="button"
           onClick={handlePlayAll}
           className={styles.playAllBtn}
+          disabled={tracks.length === 0}
         >
           {isPlayingThisPlaylist ? (
             <>
@@ -150,7 +159,12 @@ export default function PlaylistPage({
         </div>
 
         <div className={styles.tracksList}>
-          {playlistTracks.map((t) => (
+          {tracks.length === 0 && (
+            <p>
+              This playlist is empty. Add your favorite songs to get started.
+            </p>
+          )}
+          {tracks.map((t) => (
             <TrackItem
               key={t.id}
               trackIndex={t.index}
