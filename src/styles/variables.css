@@ -1,0 +1,36 @@
+:root {
+  --bg-app: #000000;
+  --bg-sidebar: #000000;
+  --bg-header: #000000;
+  --bg-player: #000000;
+  --bg-surface: #121212;
+  --bg-surface-elevated: #181818;
+  --bg-card: #0e0e10;
+  --bg-card-hover: #181818;
+  --bg-input: #121212;
+
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --text-dimmed: #52525b;
+
+  --accent-white: #ffffff;
+  --accent-black: #000000;
+
+  --border-subtle: #1c1c1f;
+  --border-medium: #27272a;
+  --border-strong: #3f3f46;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-full: 9999px;
+
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+
+  --sidebar-width: 250px;
+  --header-height: 64px;
+  --player-height: 80px;
+}
