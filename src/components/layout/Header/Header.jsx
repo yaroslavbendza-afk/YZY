@@ -97,9 +97,13 @@ export default function Header({
           <div className={styles.authGroup}>
             {isLoggedIn ? (
               <div className={styles.userProfile}>
-                <span className={styles.userName}>
+                <Link
+                  to="/profile"
+                  className={styles.userName}
+                  aria-label="Open profile"
+                >
                   {userProfile?.name || "Demo Listener"}
-                </span>
+                </Link>
                 <button
                   type="button"
                   className={styles.logoutBtn}

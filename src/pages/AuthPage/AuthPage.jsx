@@ -1,9 +1,10 @@
-import { useSearchParams } from "react-router";
+import { useLocation, useSearchParams } from "react-router";
 import AuthModal from "../../components/auth/AuthModal/AuthModal";
 import styles from "./AuthPage.module.css";
 
 export default function AuthPage({ onLogin }) {
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
   const mode = searchParams.get("mode") === "signup" ? "signup" : "login";
   return (
     <main className={styles.page}>
@@ -11,7 +12,9 @@ export default function AuthPage({ onLogin }) {
         isPage={true}
         mode={mode}
         onModeChange={(nextMode) =>
-          setSearchParams(nextMode === "signup" ? { mode: "signup" } : {})
+          setSearchParams(nextMode === "signup" ? { mode: "signup" } : {}, {
+            state: location.state,
+          })
         }
         onLogin={onLogin}
       />

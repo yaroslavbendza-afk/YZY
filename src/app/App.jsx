@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   Route,
   Routes,
+  useLocation,
   useMatch,
   useNavigate,
   useSearchParams,
@@ -16,6 +17,8 @@ import PlaylistPage from "../pages/PlaylistPage/PlaylistPage";
 import LibraryPage from "../pages/LibraryPage/LibraryPage";
 import AuthPage from "../pages/AuthPage/AuthPage";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
+import ProfilePage from "../pages/ProfilePage/ProfilePage";
+import ProtectedRoute from "../components/auth/ProtectedRoute/ProtectedRoute";
 import { mockPlaylists } from "../data/mockPlaylists";
 import styles from "./App.module.css";
 
@@ -132,6 +135,7 @@ const allTracksList = [
 
 export default function App() {
   const navigate = useNavigate();
+  const location = useLocation();
   const isSearchPage = Boolean(useMatch("/search"));
   const [searchParams] = useSearchParams();
   const searchQuery = isSearchPage ? searchParams.get("q") || "" : "";
@@ -157,8 +161,22 @@ export default function App() {
   const [currentTrack, setCurrentTrack] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isSoundbarOpen, setIsSoundbarOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userProfile, setUserProfile] = useState(null);
+  const [userProfile, setUserProfile] = useState(() => {
+    try {
+      const saved = JSON.parse(
+        sessionStorage.getItem("yzy.demoProfile") || "null",
+      );
+      return typeof saved?.name === "string" &&
+        saved.name.trim() &&
+        typeof saved.email === "string" &&
+        saved.email.trim()
+        ? { name: saved.name, email: saved.email }
+        : null;
+    } catch {
+      return null;
+    }
+  });
+  const isLoggedIn = Boolean(userProfile);
 
   useEffect(() => {
     try {
@@ -195,13 +213,21 @@ export default function App() {
   };
 
   const handleLogin = (profile) => {
-    setIsLoggedIn(true);
     setUserProfile(profile);
+    try {
+      sessionStorage.setItem("yzy.demoProfile", JSON.stringify(profile));
+    } catch {
+      return;
+    }
   };
 
   const handleLogout = () => {
-    setIsLoggedIn(false);
     setUserProfile(null);
+    try {
+      sessionStorage.removeItem("yzy.demoProfile");
+    } catch {
+      return;
+    }
   };
 
   const handlePlayTrack = (track) => {
@@ -301,13 +327,34 @@ export default function App() {
                 <PlaylistPage {...playbackProps} playlists={playlists} />
               }
             />
+            <Route element={<ProtectedRoute isLoggedIn={isLoggedIn} />}>
+              <Route
+                path="/profile"
+                element={
+                  <ProfilePage
+                    userProfile={userProfile}
+                    onLogout={handleLogout}
+                  />
+                }
+              />
+            </Route>
             <Route
               path="/auth"
               element={
                 <AuthPage
                   onLogin={(profile) => {
                     handleLogin(profile);
-                    navigate("/", { replace: true });
+                    const from = location.state?.from;
+                    const destination =
+                      from?.pathname?.startsWith("/") &&
+                      !from.pathname.startsWith("//")
+                        ? {
+                            pathname: from.pathname,
+                            search: from.search,
+                            hash: from.hash,
+                          }
+                        : "/";
+                    navigate(destination, { replace: true });
                   }}
                 />
               }
